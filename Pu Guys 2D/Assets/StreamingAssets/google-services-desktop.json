@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "695857645728",
+    "project_id": "pu-pu-jump",
+    "storage_bucket": "pu-pu-jump.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:695857645728:android:7c6ede7adbb930c127a1c5",
+        "android_client_info": {
+          "package_name": "com.Axx.PupuJump"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClgnXErCFYNrRmxO6iAyBQ2XLymrBvNnY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
