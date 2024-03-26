@@ -1,4 +1,4 @@
-//using Firebase.Analytics;
+using Firebase.Analytics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -60,18 +60,18 @@ public class GameLogicCenter : MonoBehaviour
     {
         if (pause)
         {
-            //FirebaseAnalytics.LogEvent("App_Out");
+            FirebaseAnalytics.LogEvent("App_Out");
             PlayerPrefs.Save();
         }
         else
         {
-            //FirebaseAnalytics.LogEvent("App_In");
+            FirebaseAnalytics.LogEvent("App_In");
         }
     }
 
     private void OnApplicationQuit()
     {
-        //FirebaseAnalytics.LogEvent("App_Quit");
+        FirebaseAnalytics.LogEvent("App_Quit");
         PlayerPrefs.Save();
     }
 }
