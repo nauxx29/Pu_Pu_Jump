@@ -15,6 +15,7 @@ public class StairManager : MonoSingleton<StairManager>
     private Dictionary<StairType, ObjectPool<Stair>> stairPools = new Dictionary<StairType, ObjectPool<Stair>>();
     private List<Stair> activeStairList = new List<Stair>();
     private Queue<Vector3> strawStairPositionRecord = new Queue<Vector3>();
+    private int lastSpawnScore = 0; 
 
     [SerializeField] private Stair _brickStair;
     [SerializeField] private Stair _woodStair;
@@ -96,6 +97,7 @@ public class StairManager : MonoSingleton<StairManager>
 
     public void UpdateScoreAndVibrate(int value)
     {
+
         void Vibratate()
         {
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -105,8 +107,25 @@ public class StairManager : MonoSingleton<StairManager>
 #endif
         }
 
+        void CheckIfSpawnStair()
+        {
+            float spawnTriggerY = LastSpawnY - GameConst.LAST_STAIR_SAFE_DISTANCE;
+            if (PlayerManager.Instance.LastRecordY > spawnTriggerY)
+            {
+                int spawnCount = (int)Mathf.Round((PlayerManager.Instance.LastRecordY - spawnTriggerY) / GameConst.SPAWN_INTERVAL_Y);
+                Debug.Log($"S = {spawnTriggerY}, P = {PlayerManager.Instance.LastRecordY}, result = {spawnCount}");
+                SpawnStairDuplicateWrapper(spawnCount);
+            }
+        }
+
         _score += value;
         UiManager.Instance.UpdateScore(_score);
+
+        if (_score - lastSpawnScore >= 5)
+        {
+            CheckIfSpawnStair();
+            lastSpawnScore = _score;
+        }
 
         if (SideMenuUi.VibrationSetting)
         {
@@ -165,12 +184,18 @@ public class StairManager : MonoSingleton<StairManager>
 
     #region StairsSpawn
     [SerializeField] private Transform _lastTutorialBrick;
-    private float lastSpawnY;
+    public float LastSpawnY { get; private set; }
 
     public void InitStairs()
     {
-        lastSpawnY = _lastTutorialBrick.position.y;
-        for (int i = 0; i < GameConst.INIT_STAIR_AMOUNT; i++)
+        LastSpawnY = _lastTutorialBrick.position.y;
+        SpawnStairDuplicateWrapper(GameConst.INIT_STAIR_AMOUNT);
+        lastSpawnScore = 0;
+    }
+
+    public void SpawnStairDuplicateWrapper(int count)
+    {
+        for(int i = 0; i < count; i ++)
         {
             SpawnStair();
         }
@@ -180,9 +205,9 @@ public class StairManager : MonoSingleton<StairManager>
     {
         //float randomSpawnAxisX = Random.Range(GameConst.SCREEN_LEFT, GameConst.SCREEN_RIGHT);
         float randomSpawnAxisX = Random.Range(BoundaryValue.LeftX, BoundaryValue.RightX);
-        float randomSpawnAxisY = Random.Range(lastSpawnY + GameConst.SPAWN_INTERVAL_Y - GameConst.SPAWN_MARGIN_Y, lastSpawnY + GameConst.SPAWN_INTERVAL_Y + GameConst.SPAWN_MARGIN_Y);
+        float randomSpawnAxisY = Random.Range(LastSpawnY + GameConst.SPAWN_INTERVAL_Y - GameConst.SPAWN_MARGIN_Y, LastSpawnY + GameConst.SPAWN_INTERVAL_Y + GameConst.SPAWN_MARGIN_Y);
         Vector3 stairPosition = new Vector3(randomSpawnAxisX, randomSpawnAxisY, 0);
-        lastSpawnY = randomSpawnAxisY;
+        LastSpawnY = randomSpawnAxisY;
 
         StairType type = GetRandomType();
         Stair stair = FetchFromPool(type);

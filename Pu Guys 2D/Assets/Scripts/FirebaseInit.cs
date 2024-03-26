@@ -1,6 +1,4 @@
 using Firebase.Extensions;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Firebase;
 
@@ -16,7 +14,6 @@ public class FirebaseInit : MonoBehaviour
                 // Create and hold a reference to your FirebaseApp,
                 // where app is a Firebase.FirebaseApp property of your application class.
                 FirebaseApp app = FirebaseApp.DefaultInstance;
-                Debug.Log("FireBase Init");
                 // Set a flag here to indicate whether Firebase is ready to use by your app.
             }
             else

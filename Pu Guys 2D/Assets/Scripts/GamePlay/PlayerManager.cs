@@ -6,7 +6,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
     public readonly Vector3 START_POSITITON = new Vector3(0, 0, 0);
     public readonly Vector3 REVIVE_ERROR = new Vector3(0, 2, 0);
 
-    public float LaetRecordY {  get; private set; }
+    public float LastRecordY {  get; private set; }
     public bool IsAlive { get; private set; }
     public bool IsUsingJoyStick { get; private set; }
     public bool AlreadyRevived { get; private set; }
@@ -48,7 +48,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
 #else
         IsUsingJoyStick = true;
 #endif
-        LaetRecordY = 0;
+        LastRecordY = 0;
         IsAlive = true;
 
         SetPuAlive(true);
@@ -85,22 +85,33 @@ public class PlayerManager : MonoSingleton<PlayerManager>
         OnCheckMoving();
         OnCheckJump();
         OnCheckBoundary();
-        //OnCheckFall();
-        OnCheckPlayerPosition();
+        OnCheckCameraPosition();
+        //OnCheckSpawnStair();
     }
 
-    private void OnCheckPlayerPosition()
+    private void OnCheckCameraPosition()
     {
-        bool shouldUpdateY = transform.position.y > LaetRecordY;
+        bool shouldUpdateY = transform.position.y > LastRecordY;
         if (!shouldUpdateY)
         {
             return;
         }
 
-        LaetRecordY = transform.position.y;
-        Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, LaetRecordY, 0);
+        LastRecordY = transform.position.y;
+        CameraManager.Instance.SetCameraPosition(new Vector3(Camera.main.transform.position.x, LastRecordY, 0));
 
     }
+
+    /*private void OnCheckSpawnStair()
+    {
+        float spawnTriggerY = StairManager.Instance.LastSpawnY - GameConst.LAST_STAIR_SAFE_DISTANCE;
+        if (LastRecordY > spawnTriggerY)
+        {
+            int spawnCount = (int)Mathf.Round((LastRecordY - spawnTriggerY) / GameConst.SPAWN_INTERVAL_Y);
+            Debug.Log($"S = {spawnTriggerY}, P = {LastRecordY}, result = {spawnCount}");
+            StairManager.Instance.SpawnStairDuplicateWrapper(spawnCount);
+        }
+    }*/
 
     #region Movement
     public void OnJumpBtnClicked()
@@ -216,11 +227,12 @@ public class PlayerManager : MonoSingleton<PlayerManager>
         }
     }
 
-    private void Reset()
+    public void Reset()
     {
         AlreadyRevived = false;
         SetPuAlive(true);
         transform.position = START_POSITITON;
+        LastRecordY = START_POSITITON.y;
     }
 
     public void RevivePlayer()

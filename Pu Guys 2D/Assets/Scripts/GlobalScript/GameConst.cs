@@ -4,6 +4,7 @@ public static class GameConst
 {
     public const float SPAWN_INTERVAL_Y = 1.2f;
     public const float SPAWN_MARGIN_Y = 0.1f;
+    public const float LAST_STAIR_SAFE_DISTANCE = 25f;
 
     public const float CAMERA_SMOOTH_SPEED = 0.3f;
     public const float SCREEN_LEFT = -2.5f;

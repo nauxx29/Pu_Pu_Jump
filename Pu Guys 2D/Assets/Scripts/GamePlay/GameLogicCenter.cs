@@ -43,19 +43,6 @@ public class GameLogicCenter : MonoBehaviour
         UiManager.Instance.TogglePanel(false);
     }
 
-    private void Update()
-    {
-        CheckQuitBtn();
-    }
-
-    private void CheckQuitBtn()
-    {
-        if (SceneManager.GetActiveScene() != null && Input.GetKeyUp(KeyCode.Escape))
-        {
-            Application.Quit();
-        }
-    }
-
     private void OnApplicationPause(bool pause)
     {
         if (pause)
