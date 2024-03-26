@@ -5,21 +5,20 @@ public class PlayerManager : MonoSingleton<PlayerManager>
 {
     public readonly Vector3 START_POSITITON = new Vector3(0, 0, 0);
     public readonly Vector3 REVIVE_ERROR = new Vector3(0, 2, 0);
-    public bool IsAlive => isAlive;
-    public bool IsUsingJoyStick => isUsingJoyStick;
-    public bool AlreadyRevived => alreadyRevived;
+
+    public float LaetRecordY {  get; private set; }
+    public bool IsAlive { get; private set; }
+    public bool IsUsingJoyStick { get; private set; }
+    public bool AlreadyRevived { get; private set; }
 
     private float moveHorizontal;
     private bool isOnTheGround = true;
     private bool isJump = false;
-    private bool isAlive = true;
-    private bool alreadyRevived;
     private Vector3 lastPlatform;
-    private bool isUsingJoyStick = true;
+    
 
     [SerializeField] private Animator _animator;
     [SerializeField] private Rigidbody2D _rb2D;
-    [SerializeField] private Transform _deadLine;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip _jumpAudioClip;
 
@@ -29,13 +28,11 @@ public class PlayerManager : MonoSingleton<PlayerManager>
     [Header("Game Mechanic")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 12f; 
-    
 
-    private void Start()
+    protected override void Awake()
     {
-
+        base.Awake();
         EventCenter.OnRestart.AddListener(Reset);
-        SetPuAlive(true);
     }
 
     private void OnDestroy()
@@ -43,14 +40,28 @@ public class PlayerManager : MonoSingleton<PlayerManager>
         EventCenter.OnRestart.RemoveListener(Reset);
     }
 
+    private void Start()
+    {
+
+#if UNITY_EDITOR
+        IsUsingJoyStick = false;
+#else
+        IsUsingJoyStick = true;
+#endif
+        LaetRecordY = 0;
+        IsAlive = true;
+
+        SetPuAlive(true);
+    }
+
     private void Update()
     {
-        if (!isAlive)
+        if (!IsAlive)
         {
             return;
         }
 
-        if (!isUsingJoyStick)
+        if (!IsUsingJoyStick)
         {
             moveHorizontal = Input.GetAxisRaw("Horizontal");
             isJump = Input.GetKey(KeyCode.Space);
@@ -66,7 +77,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
     // Update for physic system inside Unity per frame
     private void FixedUpdate()
     {
-        if (!isAlive)
+        if (!IsAlive)
         {
             return;
         }
@@ -74,7 +85,21 @@ public class PlayerManager : MonoSingleton<PlayerManager>
         OnCheckMoving();
         OnCheckJump();
         OnCheckBoundary();
-        OnCheckFall();
+        //OnCheckFall();
+        OnCheckPlayerPosition();
+    }
+
+    private void OnCheckPlayerPosition()
+    {
+        bool shouldUpdateY = transform.position.y > LaetRecordY;
+        if (!shouldUpdateY)
+        {
+            return;
+        }
+
+        LaetRecordY = transform.position.y;
+        Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, LaetRecordY, 0);
+
     }
 
     #region Movement
@@ -155,14 +180,14 @@ public class PlayerManager : MonoSingleton<PlayerManager>
         }
     }
 
-    private void OnCheckFall()
+/*    private void OnCheckFall()
     {
         // Drop down Gameover <<Not Finish yet>>
         if (transform.position.y < _deadLine.position.y)
         {
             GameOver();
         }
-    }
+    }*/
 
     #endregion
 
@@ -172,7 +197,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
     }
 
     // is weird to use PlayerManger to call GameOver()
-    private void GameOver()
+    public void GameOver()
     {
         SetPuAlive(false);
         UiManager.Instance.TogglePanel(true);
@@ -180,7 +205,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
 
     private void SetPuAlive(bool isPuAlive)
     {
-        isAlive = isPuAlive;
+        IsAlive = isPuAlive;
         if (isPuAlive)
         {
             _rb2D.WakeUp();
@@ -193,14 +218,14 @@ public class PlayerManager : MonoSingleton<PlayerManager>
 
     private void Reset()
     {
-        alreadyRevived = false;
+        AlreadyRevived = false;
         SetPuAlive(true);
         transform.position = START_POSITITON;
     }
 
     public void RevivePlayer()
     {
-        alreadyRevived = true;
+        AlreadyRevived = true;
         Vector3 revivePosition = lastPlatform + REVIVE_ERROR;
         transform.position = revivePosition;
         SetPuAlive(true);
@@ -218,7 +243,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
 
     public void ToggleJoystick(bool isOn)
     {
-        isUsingJoyStick = isOn;
+        IsUsingJoyStick = isOn;
     }
 
     #region Collision
@@ -233,7 +258,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
             lastPlatform = collision.transform.position;
         }
 
-        else if (collision.gameObject.tag == "Ghost" && isAlive)
+        else if (collision.gameObject.tag == "Ghost" && IsAlive)
         {
             GameOver();
         }

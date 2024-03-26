@@ -16,19 +16,26 @@ public class StairManager : MonoSingleton<StairManager>
     private List<Stair> activeStairList = new List<Stair>();
     private Queue<Vector3> strawStairPositionRecord = new Queue<Vector3>();
 
-    [SerializeField] private Camera _camera;
     [SerializeField] private Stair _brickStair;
     [SerializeField] private Stair _woodStair;
     [SerializeField] private Stair _strawStair;
+    [SerializeField] private GameObject _returnLine;
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
         stairPools.Add(StairType.Brick, InitPool(StairType.Brick));
         stairPools.Add(StairType.Wood, InitPool(StairType.Wood));
         stairPools.Add(StairType.Straw, InitPool(StairType.Straw));
+    }
+
+    // Control by GameLogicCenter
+    public void Init()
+    {
         InitStairs();
     }
 
+    #region ObjectPool
     private ObjectPool<Stair> InitPool(StairType type)
     {
         void ResetAnimToDefault(Stair stair)
@@ -84,32 +91,10 @@ public class StairManager : MonoSingleton<StairManager>
         activeStairList.Remove(stair);
     }
 
-    public void Reset()
-    {
-        void ResetObjectPool()
-        {
-            for (int i = 0; i < activeStairList.Count; i++)
-            {
-                if (activeStairList[i].gameObject.activeSelf)
-                {
-                    stairPools[activeStairList[i].Type].Release(activeStairList[i]);
-                }
-            }
-            activeStairList.Clear();
-        }
+    #endregion
 
-        void ResetScore()
-        {
-            _score = 0;
-            UiManager.Instance.UpdateScore(_score);
-        }
 
-        ResetObjectPool();
-        InitStairs();
-        ResetScore();
-    }
-
-    public void UpdateScore(int value)
+    public void UpdateScoreAndVibrate(int value)
     {
         void Vibratate()
         {
@@ -129,6 +114,7 @@ public class StairManager : MonoSingleton<StairManager>
         }
     }
 
+    // for revive use
     public void UpdateStrawStairPositionRecord(Vector3 position)
     {
         if (strawStairPositionRecord.Count >= 3)
@@ -151,11 +137,37 @@ public class StairManager : MonoSingleton<StairManager>
         }
     }
 
+
+    public void Restart()
+    {
+        void ResetObjectPool()
+        {
+            for (int i = 0; i < activeStairList.Count; i++)
+            {
+                if (activeStairList[i].gameObject.activeSelf)
+                {
+                    stairPools[activeStairList[i].Type].Release(activeStairList[i]);
+                }
+            }
+            activeStairList.Clear();
+        }
+
+        void ResetScore()
+        {
+            _score = 0;
+            UiManager.Instance.UpdateScore(_score);
+        }
+
+        ResetObjectPool();
+        ResetScore();
+        InitStairs();
+    }
+
     #region StairsSpawn
     [SerializeField] private Transform _lastTutorialBrick;
     private float lastSpawnY;
 
-    private void InitStairs()
+    public void InitStairs()
     {
         lastSpawnY = _lastTutorialBrick.position.y;
         for (int i = 0; i < GameConst.INIT_STAIR_AMOUNT; i++)
@@ -164,7 +176,7 @@ public class StairManager : MonoSingleton<StairManager>
         }
     }
 
-    public void SpawnStair()
+    private void SpawnStair()
     {
         //float randomSpawnAxisX = Random.Range(GameConst.SCREEN_LEFT, GameConst.SCREEN_RIGHT);
         float randomSpawnAxisX = Random.Range(BoundaryValue.LeftX, BoundaryValue.RightX);
@@ -184,5 +196,16 @@ public class StairManager : MonoSingleton<StairManager>
     }
 
     #endregion
+
+    private void CheckStairAfterrSuperJump()
+    {
+        foreach (Stair stair in activeStairList)
+        {
+            if (stair.transform.position.y < _returnLine.transform.position.y)
+            {
+                ReturnToPool(stair.Type, stair);
+            }
+        }
+    }
 }
 

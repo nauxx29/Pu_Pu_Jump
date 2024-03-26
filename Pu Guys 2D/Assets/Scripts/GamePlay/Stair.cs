@@ -32,7 +32,7 @@ public class Stair : MonoBehaviour
             if (lastStair != this)
             {
                 lastStair = this;
-                StairManager.Instance.UpdateScore(1);
+                StairManager.Instance.UpdateScoreAndVibrate(1);
             }
         }
     }
