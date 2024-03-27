@@ -7,11 +7,13 @@ public class UiManager : MonoSingleton<UiManager>
     [SerializeField] private TMP_Text _highScore;
     [SerializeField] private GameObject _reviveButton;
     [SerializeField] private GameObject _gameoverPanel;
-    
+
+
     private void Start()
     {
         int initScore = 0;
         UpdateScore(initScore);
+
     }
 
     public void UpdateScore(int score)
@@ -24,4 +26,6 @@ public class UiManager : MonoSingleton<UiManager>
         _reviveButton.SetActive(!PlayerManager.Instance.AlreadyRevived);
         _gameoverPanel.SetActive(sholdPanelActive);
     }
+
+
 }

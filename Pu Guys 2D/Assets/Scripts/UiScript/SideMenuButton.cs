@@ -13,16 +13,17 @@ public class SideMenuButton : MonoBehaviour
     [SerializeField] private Image _image;
     [SerializeField] private Color _turnOnColor;
     [SerializeField] private Color _turnOffColor;
+    
 
     private void OnEnable()
     {
-        UpdateColor();
+        bool isON = setting == SideMenuSetting.Vibrate ? SideMenuUi.VibrationSetting : SideMenuUi.MusicSetting;
+        UpdateColor(isON);
     }
 
-    public void UpdateColor()
+    public void UpdateColor(bool isOn)
     {
-        bool SettingControl = setting == SideMenuSetting.Vibrate ? SideMenuUi.VibrationSetting : SideMenuUi.MusicSetting;
-        _image.color = SettingControl ? _turnOnColor : _turnOffColor;
+        _image.color = isOn ? _turnOnColor : _turnOffColor;
     }
 
 }

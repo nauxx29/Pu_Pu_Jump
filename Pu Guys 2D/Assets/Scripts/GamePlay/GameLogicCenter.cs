@@ -1,9 +1,9 @@
 using Firebase.Analytics;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameLogicCenter : MonoBehaviour
 {
+
     private void Awake()
     {
         Vibration.Init();

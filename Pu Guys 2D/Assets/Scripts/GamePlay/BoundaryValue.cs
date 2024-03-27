@@ -9,6 +9,5 @@ public class BoundaryValue : MonoBehaviour
     {
         LeftX = ScreenBoundaries.GetBorderPositionX(BorderSide.Left);
         RightX = ScreenBoundaries.GetBorderPositionX(BorderSide.Right);
-        Debug.Log($"L : {LeftX}, R : {RightX}");
     }
 }
