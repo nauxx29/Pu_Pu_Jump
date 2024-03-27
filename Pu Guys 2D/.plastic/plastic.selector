@@ -1,4 +1,0 @@
-repository "PUPU JUMP@uenukuxx@cloud"
-  path "/"
-    br "/main"
-    co "/main"

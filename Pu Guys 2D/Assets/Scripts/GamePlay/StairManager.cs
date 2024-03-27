@@ -113,7 +113,6 @@ public class StairManager : MonoSingleton<StairManager>
             if (PlayerManager.Instance.LastRecordY > spawnTriggerY)
             {
                 int spawnCount = (int)Mathf.Round((PlayerManager.Instance.LastRecordY - spawnTriggerY) / GameConst.SPAWN_INTERVAL_Y);
-                Debug.Log($"S = {spawnTriggerY}, P = {PlayerManager.Instance.LastRecordY}, result = {spawnCount}");
                 SpawnStairDuplicateWrapper(spawnCount);
             }
         }
@@ -203,7 +202,6 @@ public class StairManager : MonoSingleton<StairManager>
 
     private void SpawnStair()
     {
-        //float randomSpawnAxisX = Random.Range(GameConst.SCREEN_LEFT, GameConst.SCREEN_RIGHT);
         float randomSpawnAxisX = Random.Range(BoundaryValue.LeftX, BoundaryValue.RightX);
         float randomSpawnAxisY = Random.Range(LastSpawnY + GameConst.SPAWN_INTERVAL_Y - GameConst.SPAWN_MARGIN_Y, LastSpawnY + GameConst.SPAWN_INTERVAL_Y + GameConst.SPAWN_MARGIN_Y);
         Vector3 stairPosition = new Vector3(randomSpawnAxisX, randomSpawnAxisY, 0);
