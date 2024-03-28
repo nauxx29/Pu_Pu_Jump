@@ -30,6 +30,12 @@ public static class GameConst
         public const string SIDEMENU_CLOSE = "SideMenuClose";
     }
 
+    public class Volume
+    {
+        public const float GHOST_AS_ORIGINAL_VOULME = 0.6f;
+        public const float PU_AS_ORIGINAL_VOULME = 0.5f;
+        public const float BG_AS_ORIGINAL_VOULME = 1;
+    }
 }
 
 

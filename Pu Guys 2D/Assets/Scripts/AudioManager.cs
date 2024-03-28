@@ -1,28 +1,28 @@
 using UnityEngine;
 
-public class AudioManager : MonoSingleton<AudioManager>
+public class BgAudio : MonoBehaviour
 {
     [SerializeField] private AudioSource _audio;
+
+    private void Awake()
+    {
+        EventCenter.OnMusicChange.AddListener(AudioSetting);
+    }
+
+    private void OnDestroy()
+    {
+        EventCenter.OnMusicChange.RemoveListener(AudioSetting);
+    }
 
     void Start()
     {
         DontDestroyOnLoad(gameObject);
-
-        bool souldPLayMusic = SideMenuUi.MusicSetting;
-
-        if (souldPLayMusic)
-        {
-            _audio.Stop();
-        }
+        AudioSetting();
     }
 
-    public void Stop()
+    private void AudioSetting()
     {
-        _audio.Stop();
+        _audio.volume = SideMenuUi.MusicSetting ? GameConst.Volume.BG_AS_ORIGINAL_VOULME : 0f;
     }
 
-    public void Play()
-    {
-        _audio.Play();
-    }
 }

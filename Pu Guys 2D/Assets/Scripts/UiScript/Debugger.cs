@@ -8,13 +8,14 @@ public enum EditValueType
     Jump = 1
 }
 
-public class Debugger : MonoBehaviour
+public class Debugger : MonoSingleton<Debugger>
 {
     [SerializeField] private GameObject _debugPanel;
     [SerializeField] private TMP_Text _fpsText;
     [SerializeField] private TMP_InputField _speed;
     [SerializeField] private TMP_InputField _jump;
     [SerializeField] private Toggle _joystickToggle;
+    [SerializeField] private GameObject _debugBtn;
 
     private float updateTimer = .2f;
     private float fpsCount;
@@ -29,11 +30,31 @@ public class Debugger : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        else
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+    }
 
-        _joystickToggle.isOn = PlayerManager.Instance.IsUsingJoyStick;
+    private void OnEnable()
+    {
+        if (PlayerManager.Instance != null)
+        {
+            _joystickToggle.isOn = PlayerManager.Instance.IsUsingJoyStick;
+        }
+    }
+
+    public void OnChangeScene()
+    {
+        _debugBtn.SetActive(false);
     }
 
     private void Update()
+    {
+        FPSCounter();
+    }
+
+    private void FPSCounter()
     {
         updateTimer -= Time.deltaTime;
         if (updateTimer <= 0f)

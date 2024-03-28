@@ -3,6 +3,8 @@ using System;
 public class EventCenter
 {
     public static Event OnRestart = new Event();
+    public static Event OnMusicChange = new Event();
+    public static Event OnSceneChange = new Event();
 }
 
 public class Event

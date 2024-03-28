@@ -1,3 +1,4 @@
+using Firebase.Analytics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -39,6 +40,8 @@ public class SideMenuUi : MonoBehaviour
     public void OnClickSideMenu()
     {
         isOpen = !isOpen;
+        FirebaseAnalytics.LogEvent("SideMenu", new Parameter("isOpen", isOpen.ToString()));
+
         _panel.raycastTarget = isLoadScene ? false : isOpen;
         _sideMenuRenderer.sprite = isOpen ? _closeSprite : _threeLineSprite;
         _vibrateButton.gameObject.SetActive(isOpen);
@@ -48,35 +51,43 @@ public class SideMenuUi : MonoBehaviour
 
     public void OnClickMusic()
     {
-        OnChageSettingValue(SaveKey.MUSIC, MusicSetting);
-        _musicButton.UpdateColor(MusicSetting);
-        if (MusicSetting)
-        {
-            AudioManager.Instance.Play();
-        }
-        else
-        {
-            AudioManager.Instance.Stop();
-        }
-        
+        OnChageSettingValue(SaveKey.MUSIC, _musicButton);
+        EventCenter.OnMusicChange.Invoke();
     }
 
     public void OnClickVibration()
     {
-        OnChageSettingValue(SaveKey.VIBRATION, VibrationSetting);
-        _vibrateButton.UpdateColor(VibrationSetting);
+        OnChageSettingValue(SaveKey.VIBRATION, _vibrateButton);
     }
 
     public void OnClickQuit()
     {
+        FirebaseAnalytics.LogEvent("QuitBtn");
         PlayerPrefs.Save();
         Application.Quit();
     }
 
-    private void OnChageSettingValue(string key, bool targetSeting)
+    private void OnChageSettingValue(string key, SideMenuButton button)
     {
-        targetSeting = !targetSeting;
-        int boolToIntValue = targetSeting == true ? 1 : 0;
+        bool targetSetting;
+        switch (key)
+        {
+            case SaveKey.MUSIC:
+                MusicSetting = !MusicSetting;
+                targetSetting = MusicSetting;
+                break;
+            case SaveKey.VIBRATION:
+                VibrationSetting = !VibrationSetting;
+                targetSetting = VibrationSetting;
+                break;
+            default:
+                targetSetting = false;
+                Debug.LogError("Change Setting Value is not SaveKey value");
+                break;
+        }
+
+        int boolToIntValue = targetSetting == true ? 1 : 0;
         PlayerPrefs.SetInt(key, boolToIntValue);
+        button.UpdateColor(targetSetting);
     }
 }

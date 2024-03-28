@@ -23,26 +23,6 @@ public class GameLogicCenter : MonoBehaviour
         StairManager.Instance.Init();
     }
 
-    public void OnClickedRestart()
-    {
-        EventCenter.OnRestart.Invoke();
-        StairManager.Instance.Restart();
-        UiManager.Instance.TogglePanel(false);
-    }
-
-    public void OnClickedRevive()
-    {
-        if (PlayerManager.Instance.AlreadyRevived)
-        {
-            return;
-        }
-        // Order matter
-        StairManager.Instance.OnReviveResetStrawStair();
-        PlayerManager.Instance.RevivePlayer();
-        GhostManager.Instance.OnRevive();
-        UiManager.Instance.TogglePanel(false);
-    }
-
     private void OnApplicationPause(bool pause)
     {
         if (pause)

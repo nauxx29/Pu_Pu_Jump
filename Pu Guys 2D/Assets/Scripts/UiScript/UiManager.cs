@@ -13,7 +13,6 @@ public class UiManager : MonoSingleton<UiManager>
     {
         int initScore = 0;
         UpdateScore(initScore);
-
     }
 
     public void UpdateScore(int score)
@@ -27,5 +26,24 @@ public class UiManager : MonoSingleton<UiManager>
         _gameoverPanel.SetActive(sholdPanelActive);
     }
 
+    public void OnClickedRestart()
+    {
+        EventCenter.OnRestart.Invoke();
+        StairManager.Instance.Restart();
+        TogglePanel(false);
+    }
+
+    public void OnClickedRevive()
+    {
+        if (PlayerManager.Instance.AlreadyRevived)
+        {
+            return;
+        }
+        // Order matter
+        StairManager.Instance.OnReviveResetStrawStair();
+        PlayerManager.Instance.RevivePlayer();
+        GhostManager.Instance.OnRevive();
+        TogglePanel(false);
+    }
 
 }

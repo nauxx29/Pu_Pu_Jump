@@ -8,19 +8,35 @@ public class GhostManager : MonoSingleton<GhostManager>
     [SerializeField] private float _slowChase = 1f;
     [SerializeField] private float _fastChase = 4f;
     [SerializeField] private float _fastChaseDistance = 8f;
+    [SerializeField] private AudioSource _audioSource;
 
     private Vector3 originalPosition;
 
-    private void Start()
+    protected override void Awake()
     {
-        originalPosition = transform.position;
+        base.Awake();
+        EventCenter.OnMusicChange.AddListener(AudioSetting);
         EventCenter.OnRestart.AddListener(OnReset);
     }
 
     private void OnDestroy()
     {
         EventCenter.OnRestart.RemoveListener(OnReset);
+        EventCenter.OnMusicChange.RemoveListener(AudioSetting);
     }
+
+    private void Start()
+    {
+        originalPosition = transform.position;
+        AudioSetting();
+    }
+
+    private void AudioSetting()
+    {
+        _audioSource.volume = SideMenuUi.MusicSetting ? GameConst.Volume.GHOST_AS_ORIGINAL_VOULME : 0f;
+    }
+
+
 
     // Update is called once per frame
     void Update()

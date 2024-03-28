@@ -33,11 +33,13 @@ public class PlayerManager : MonoSingleton<PlayerManager>
     {
         base.Awake();
         EventCenter.OnRestart.AddListener(Reset);
+        EventCenter.OnMusicChange.AddListener(AudioSetting);
     }
 
     private void OnDestroy()
     {
         EventCenter.OnRestart.RemoveListener(Reset);
+        EventCenter.OnMusicChange.RemoveListener(AudioSetting);
     }
 
     private void Start()
@@ -50,7 +52,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
 #endif
         LastRecordY = 0;
         IsAlive = true;
-
+        AudioSetting();
         SetPuAlive(true);
     }
 
@@ -86,7 +88,6 @@ public class PlayerManager : MonoSingleton<PlayerManager>
         OnCheckJump();
         OnCheckBoundary();
         OnCheckCameraPosition();
-        //OnCheckSpawnStair();
     }
 
     private void OnCheckCameraPosition()
@@ -101,17 +102,6 @@ public class PlayerManager : MonoSingleton<PlayerManager>
         CameraManager.Instance.SetCameraPosition(new Vector3(Camera.main.transform.position.x, LastRecordY, 0));
 
     }
-
-    /*private void OnCheckSpawnStair()
-    {
-        float spawnTriggerY = StairManager.Instance.LastSpawnY - GameConst.LAST_STAIR_SAFE_DISTANCE;
-        if (LastRecordY > spawnTriggerY)
-        {
-            int spawnCount = (int)Mathf.Round((LastRecordY - spawnTriggerY) / GameConst.SPAWN_INTERVAL_Y);
-            Debug.Log($"S = {spawnTriggerY}, P = {LastRecordY}, result = {spawnCount}");
-            StairManager.Instance.SpawnStairDuplicateWrapper(spawnCount);
-        }
-    }*/
 
     #region Movement
     public void OnJumpBtnClicked()
@@ -176,6 +166,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
         AnimationWalk(false);
         JumpForce();
         JumpVfx();
+        
     }
 
     private void OnCheckBoundary()
@@ -190,15 +181,6 @@ public class PlayerManager : MonoSingleton<PlayerManager>
             transform.position = new Vector2(BoundaryValue.RightX, transform.position.y);
         }
     }
-
-/*    private void OnCheckFall()
-    {
-        // Drop down Gameover <<Not Finish yet>>
-        if (transform.position.y < _deadLine.position.y)
-        {
-            GameOver();
-        }
-    }*/
 
     #endregion
 
@@ -258,27 +240,44 @@ public class PlayerManager : MonoSingleton<PlayerManager>
         IsUsingJoyStick = isOn;
     }
 
+    private void AudioSetting()
+    {
+        _audioSource.volume = SideMenuUi.MusicSetting ? GameConst.Volume.PU_AS_ORIGINAL_VOULME : 0f;
+    }
+
+
     #region Collision
     // if hiiting(collision) sth
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
         // Check pu is on the top of the stair not trigger it from the below
-        if (collision.gameObject.tag == "Platform" && collision.relativeVelocity.y > 0f)
+        if (collision.gameObject.CompareTag("Ghost") && IsAlive)
+        {
+            GameOver();
+        }
+
+        if (isOnTheGround == true)
+        {
+            return;
+        }
+
+        if (collision.gameObject.CompareTag("Platform") && collision.relativeVelocity.y > 0f)
         {
             isOnTheGround = true;
             lastPlatform = collision.transform.position;
-        }
-
-        else if (collision.gameObject.tag == "Ghost" && IsAlive)
-        {
-            GameOver();
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Platform")
+        if (isOnTheGround == false)
+        {
+            return;
+        }
+
+        if (collision.gameObject.CompareTag("Platform"))
         {
             isOnTheGround = false;
         }
