@@ -9,6 +9,9 @@ public class TitleScripts : MonoBehaviour
         FirebaseAnalytics.LogEvent("Start");
         PlayerPrefs.Save();
         SceneManager.LoadScene("Game");
-        Debugger.Instance.OnChangeScene();
+        if (Debug.isDebugBuild)
+        {
+            Debugger.Instance.OnChangeScene();
+        }
     }
 }
