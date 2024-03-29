@@ -12,7 +12,6 @@ public class SideMenuUi : MonoBehaviour
     [SerializeField] private GameObject _exitButton;
     [SerializeField] private Animator _animator;
     [SerializeField] private Image _panel;
-    [SerializeField] private AudioSource _bgMusic;
 
     private bool isOpen;
     private bool isLoadScene => PlayerManager.Instance == null;

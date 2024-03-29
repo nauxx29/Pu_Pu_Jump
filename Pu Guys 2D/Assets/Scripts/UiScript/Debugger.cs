@@ -115,4 +115,9 @@ public class Debugger : MonoSingleton<Debugger>
     {
         PlayerManager.Instance.ToggleJoystick(toggle.isOn);
     }
+
+    public void OnCrash()
+    {
+        throw new System.Exception("test exception please ignore");
+    }
 }
