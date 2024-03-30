@@ -4,13 +4,22 @@ apply plugin: 'com.android.library'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 // Android Resolver Dependencies Start
+    implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1' // Assets/IronSource/Editor/IronSourceSDKDependencies.xml:17
     implementation 'com.google.android.gms:play-services-base:18.3.0' // Assets/Firebase/Editor/AppDependencies.xml:17
+    implementation 'com.google.android.gms:play-services-basement:18.1.0' // Assets/IronSource/Editor/IronSourceSDKDependencies.xml:25
     implementation 'com.google.firebase:firebase-analytics:21.5.1' // Assets/Firebase/Editor/CrashlyticsDependencies.xml:15
     implementation 'com.google.firebase:firebase-analytics-unity:11.8.0' // Assets/Firebase/Editor/AnalyticsDependencies.xml:18
     implementation 'com.google.firebase:firebase-app-unity:11.8.0' // Assets/Firebase/Editor/AppDependencies.xml:22
     implementation 'com.google.firebase:firebase-common:20.4.2' // Assets/Firebase/Editor/AppDependencies.xml:13
     implementation 'com.google.firebase:firebase-crashlytics-ndk:18.6.2' // Assets/Firebase/Editor/CrashlyticsDependencies.xml:13
     implementation 'com.google.firebase:firebase-crashlytics-unity:11.8.0' // Assets/Firebase/Editor/CrashlyticsDependencies.xml:20
+    implementation 'com.ironsource.adapters:unityadsadapter:4.3.37' // Assets/IronSource/Editor/ISUnityAdsAdapterDependencies.xml:8
+    implementation 'com.ironsource.sdk:mediationsdk:7.9.0' // Assets/IronSource/Editor/IronSourceSDKDependencies.xml:9
+    implementation 'com.ironsource:adqualitysdk:7.18.1' // Assets/IronSource/Editor/Dependencies.xml:8
+    implementation 'com.unity3d.ads:unity-ads:4.10.0' // Assets/IronSource/Editor/ISUnityAdsAdapterDependencies.xml:15
+    implementation 'com.google.android.gms:play-services-appset:16.0.0'
+    implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
+    implementation 'com.google.android.gms:play-services-basement:17.1.1'
 // Android Resolver Dependencies End
 **DEPS**}
 
