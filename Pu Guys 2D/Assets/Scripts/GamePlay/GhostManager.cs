@@ -33,10 +33,8 @@ public class GhostManager : MonoSingleton<GhostManager>
 
     private void AudioSetting()
     {
-        _audioSource.volume = SideMenuUi.MusicSetting ? GameConst.Volume.GHOST_AS_ORIGINAL_VOULME : 0f;
+        _audioSource.volume = PlayerRunTimeSettingData.MusicSetting ? GameConst.Volume.GHOST_AS_ORIGINAL_VOULME : 0f;
     }
-
-
 
     // Update is called once per frame
     void Update()

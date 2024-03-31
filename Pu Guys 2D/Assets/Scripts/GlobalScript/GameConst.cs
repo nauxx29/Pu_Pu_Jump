@@ -38,8 +38,6 @@ public static class GameConst
     }
 }
 
-
-
 public static class SaveKey
 {
     public const string FIRST_PLAY = "firstPlay";
@@ -47,3 +45,7 @@ public static class SaveKey
     public const string MUSIC = "music";
 }
 
+public static class RvPlacement
+{
+    public const string GAME_OVER = "GAME_OVER";
+}

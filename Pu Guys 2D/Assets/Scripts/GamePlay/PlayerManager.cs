@@ -242,7 +242,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
 
     private void AudioSetting()
     {
-        _audioSource.volume = SideMenuUi.MusicSetting ? GameConst.Volume.PU_AS_ORIGINAL_VOULME : 0f;
+        _audioSource.volume = PlayerRunTimeSettingData.MusicSetting ? GameConst.Volume.PU_AS_ORIGINAL_VOULME : 0f;
     }
 
 

@@ -126,7 +126,7 @@ public class StairManager : MonoSingleton<StairManager>
             lastSpawnScore = _score;
         }
 
-        if (SideMenuUi.VibrationSetting)
+        if (PlayerRunTimeSettingData.VibrationSetting)
         {
             Vibratate();
         }

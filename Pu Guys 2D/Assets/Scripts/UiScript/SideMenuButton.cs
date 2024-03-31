@@ -17,7 +17,7 @@ public class SideMenuButton : MonoBehaviour
 
     private void OnEnable()
     {
-        bool isON = setting == SideMenuSetting.Vibrate ? SideMenuUi.VibrationSetting : SideMenuUi.MusicSetting;
+        bool isON = setting == SideMenuSetting.Vibrate ? PlayerRunTimeSettingData.VibrationSetting : PlayerRunTimeSettingData.MusicSetting;
         UpdateColor(isON);
     }
 

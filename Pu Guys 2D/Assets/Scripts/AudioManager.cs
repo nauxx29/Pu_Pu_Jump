@@ -22,7 +22,7 @@ public class BgAudio : MonoBehaviour
 
     private void AudioSetting()
     {
-        _audio.volume = SideMenuUi.MusicSetting ? GameConst.Volume.BG_AS_ORIGINAL_VOULME : 0f;
+        _audio.volume = PlayerRunTimeSettingData.MusicSetting ? GameConst.Volume.BG_AS_ORIGINAL_VOULME : 0f;
     }
 
 }

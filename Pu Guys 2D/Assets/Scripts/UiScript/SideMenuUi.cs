@@ -16,15 +16,6 @@ public class SideMenuUi : MonoBehaviour
     private bool isOpen;
     private bool isLoadScene => PlayerManager.Instance == null;
 
-    public static bool VibrationSetting { get; private set; }
-    public static bool MusicSetting { get; private set; }
-
-    private void Awake()
-    {
-        VibrationSetting = PlayerPrefs.GetInt(SaveKey.VIBRATION) == 1;
-        MusicSetting = PlayerPrefs.GetInt(SaveKey.MUSIC) == 1;
-    }
-
     private void Start()
     {
         isOpen = false;
@@ -72,12 +63,12 @@ public class SideMenuUi : MonoBehaviour
         switch (key)
         {
             case SaveKey.MUSIC:
-                MusicSetting = !MusicSetting;
-                targetSetting = MusicSetting;
+                PlayerRunTimeSettingData.SetMusic(!PlayerRunTimeSettingData.MusicSetting);
+                targetSetting = PlayerRunTimeSettingData.MusicSetting;
                 break;
             case SaveKey.VIBRATION:
-                VibrationSetting = !VibrationSetting;
-                targetSetting = VibrationSetting;
+                PlayerRunTimeSettingData.SetVibrate(!PlayerRunTimeSettingData.VibrationSetting);
+                targetSetting = PlayerRunTimeSettingData.VibrationSetting;
                 break;
             default:
                 targetSetting = false;
@@ -90,3 +81,4 @@ public class SideMenuUi : MonoBehaviour
         button.UpdateColor(targetSetting);
     }
 }
+
