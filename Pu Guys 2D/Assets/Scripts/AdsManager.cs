@@ -2,6 +2,7 @@ using Firebase.Extensions;
 using UnityEngine;
 using Firebase;
 using Firebase.Crashlytics;
+using Firebase.Analytics;
 
 public class AdsManager : MonoSingleton<AdsManager>
 {
@@ -104,8 +105,12 @@ public class AdsManager : MonoSingleton<AdsManager>
     // When using server-to-server callbacks, you may ignore this event and wait for the ironSource server callback.
     protected void RewardedVideoOnAdRewardedEvent(IronSourcePlacement placement, IronSourceAdInfo adInfo)
     {
-        AdsHelper.Instance.SuccessCallback();
+        if (Debug.isDebugBuild)
+        {
+            Debug.Log($"Ads success, revenue : {adInfo.revenue}, {adInfo.adNetwork}, {adInfo.segmentName}");
+        }
         ImpressionSuccessEvent(adInfo);
+        AdsHelper.Instance.SuccessCallback();
     }
     // The rewarded video ad was failed to show.
     protected void RewardedVideoOnAdShowFailedEvent(IronSourceError error, IronSourceAdInfo adInfo)
@@ -125,17 +130,16 @@ public class AdsManager : MonoSingleton<AdsManager>
     {
         if (infoData != null)
         {
-            Firebase.Analytics.Parameter[] AdParameters = 
+            Parameter[] AdParameters = 
             {
-                new Firebase.Analytics.Parameter("ad_platform", "ironSource"),
-                new Firebase.Analytics.Parameter("ad_source", infoData.adNetwork),
-                new Firebase.Analytics.Parameter("ad_unit_name", infoData.instanceName),
-                new Firebase.Analytics.Parameter("ad_format", infoData.adUnit),
-                new Firebase.Analytics.Parameter("currency","USD"),
-                new Firebase.Analytics.Parameter("value", infoData.revenue.ToString())
-             };
-        
-            Firebase.Analytics.FirebaseAnalytics.LogEvent("ad_impression", AdParameters);
+                new Parameter("ad_platform", "ironSource"),
+                new Parameter("ad_source", infoData.adNetwork),
+                new Parameter("ad_unit_name", infoData.instanceName),
+                new Parameter("ad_format", infoData.adUnit),
+                new Parameter("currency","USD"),
+                new Parameter("value", infoData.revenue.ToString())
+            }; 
+            FirebaseAnalytics.LogEvent("Ad_Impression", AdParameters);
         }
     }
     #endregion

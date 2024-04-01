@@ -20,12 +20,12 @@ public class AdsHelper : MonoSingleton<AdsHelper>
 
     public void SuccessCallback()
     {
-        successCallback.Invoke();
+        successCallback?.Invoke();
     }
 
     public void FailureCallback()
     {
-        failureCallback.Invoke();
+        failureCallback?.Invoke();
     }
 
 }

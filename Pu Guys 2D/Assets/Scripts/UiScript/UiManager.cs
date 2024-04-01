@@ -60,6 +60,12 @@ public class UiManager : MonoSingleton<UiManager>
 #if UNITY_EDITOR
         OnRvReward();
 #elif UNITY_ANDROID
+        if (AdsHelper.Instance == null)
+        {
+            Debug.Log(" AdsHelper.Instance == null ");
+            return;
+        }
+
         AdsHelper.Instance.OnTryShowRv(RvPlacement.GAME_OVER, OnRvReward, OnReviveRvFail);
 #endif
     }
