@@ -62,7 +62,7 @@ public class UiManager : MonoSingleton<UiManager>
 #elif UNITY_ANDROID
         if (AdsHelper.Instance == null)
         {
-            Debug.Log(" AdsHelper.Instance == null ");
+            Debug.LogError("AdsHelper.Instance == null");
             return;
         }
 
