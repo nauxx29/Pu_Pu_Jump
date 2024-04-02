@@ -12,7 +12,7 @@ public class Stair : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.relativeVelocity.y <= 0f && gameObject != null)
+        if (collision.relativeVelocity.y <= 0f && gameObject != null && collision.gameObject.CompareTag("Player"))
         {
             PlayerManager.Instance.SetOnGround(true);
 
@@ -35,7 +35,7 @@ public class Stair : MonoBehaviour
             }
 
             lastStair = gameObject.transform;
-            StairManager.Instance.UpdateScoreAndVibrate(1);
+            StairManager.Instance.UpdateScoreAndVibrate(1, this);
         }
     }
 

@@ -12,16 +12,16 @@ public enum StairType
 
 public class StairManager : MonoSingleton<StairManager>
 {
-    private int _score = 0;
-    private Dictionary<StairType, ObjectPool<Stair>> stairPools = new Dictionary<StairType, ObjectPool<Stair>>();
-    private List<Stair> activeStairList = new List<Stair>();
-    private Queue<Vector3> strawStairPositionRecord = new Queue<Vector3>();
-    private int lastSpawnScore = 0; 
-
     [SerializeField] private Stair _brickStair;
     [SerializeField] private Stair _woodStair;
     [SerializeField] private Stair _strawStair;
     [SerializeField] private GameObject _returnLine;
+
+    private Dictionary<StairType, ObjectPool<Stair>> stairPools = new Dictionary<StairType, ObjectPool<Stair>>();
+    private List<Stair> activeStairList = new List<Stair>();
+    private Queue<Vector3> strawStairPositionRecord = new Queue<Vector3>();
+    private int lastSpawnScore = 0;
+    private Stair updatingStair = null;
 
     protected override void Awake()
     {
@@ -37,7 +37,7 @@ public class StairManager : MonoSingleton<StairManager>
         InitStairs();
     }
 
-    #region ObjectPool
+    #region ObjectPool Function
     private ObjectPool<Stair> InitPool(StairType type)
     {
         void ResetAnimToDefault(Stair stair)
@@ -101,7 +101,7 @@ public class StairManager : MonoSingleton<StairManager>
     #endregion
 
 
-    public void UpdateScoreAndVibrate(int value)
+    public void UpdateScoreAndVibrate(int value, Stair stair)
     {
 
         void Vibratate()
@@ -123,14 +123,20 @@ public class StairManager : MonoSingleton<StairManager>
             }
         }
 
-        _score += value;
-        UiManager.Instance.UpdateScore(_score);
-
-        if (_score - lastSpawnScore >= 5)
+        if (updatingStair == null || updatingStair != stair)
         {
-            CheckIfSpawnStair();
-            lastSpawnScore = _score;
+            updatingStair = stair;
+            UiManager.Instance.UpdateScore(value, () =>
+            {
+                if (UiManager.Instance.NowScore - lastSpawnScore >= 5)
+                {
+                    CheckIfSpawnStair();
+                    lastSpawnScore = UiManager.Instance.NowScore;
+                    updatingStair = null;
+                }
+            });
         }
+
 
         if (PlayerRunTimeSettingData.VibrationSetting)
         {
@@ -175,14 +181,7 @@ public class StairManager : MonoSingleton<StairManager>
             activeStairList.Clear();
         }
 
-        void ResetScore()
-        {
-            _score = 0;
-            UiManager.Instance.UpdateScore(_score);
-        }
-
         ResetObjectPool();
-        ResetScore();
         InitStairs();
     }
 
@@ -225,7 +224,7 @@ public class StairManager : MonoSingleton<StairManager>
 
     #endregion
 
-    private void CheckStairAfterrSuperJump()
+    private void CheckStairAfterSuperJump()
     {
         foreach (Stair stair in activeStairList)
         {

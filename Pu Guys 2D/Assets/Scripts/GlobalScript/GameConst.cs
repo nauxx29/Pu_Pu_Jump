@@ -43,6 +43,7 @@ public static class SaveKey
     public const string FIRST_PLAY = "firstPlay";
     public const string VIBRATION = "vibration";
     public const string MUSIC = "music";
+    public const string BEST_SCORE = "bestScore";
 }
 
 public static class RvPlacement

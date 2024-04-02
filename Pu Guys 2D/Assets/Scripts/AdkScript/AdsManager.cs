@@ -6,11 +6,14 @@ using Firebase.Analytics;
 
 public class AdsManager : MonoSingleton<AdsManager>
 {
+    public bool IsRvInit { get; private set; }
+
     protected override void Awake()
     {
         base.Awake();
         DontDestroyOnLoad(gameObject);
     }
+
     private void Start()
     {
         void FirebaseInit()
@@ -80,7 +83,14 @@ public class AdsManager : MonoSingleton<AdsManager>
     // This replaces the RewardedVideoAvailabilityChangedEvent(true) event
     protected void RewardedVideoOnAdAvailable(IronSourceAdInfo adInfo)
     {
-        UiManager.Instance.SetReviveBtn(true);
+        if (UiManager.Instance != null)
+        {
+            UiManager.Instance.SetReviveBtn(true);
+        }
+        else
+        {
+            IsRvInit = true;
+        }
     }
     // Indicates that no ads are available to be displayed
     // This replaces the RewardedVideoAvailabilityChangedEvent(false) event

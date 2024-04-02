@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class GameLogicCenter : MonoBehaviour
 {
-
     private void Awake()
     {
         Vibration.Init();
@@ -13,6 +12,7 @@ public class GameLogicCenter : MonoBehaviour
             PlayerPrefs.SetInt(SaveKey.FIRST_PLAY, 1);
             PlayerPrefs.SetInt(SaveKey.VIBRATION, 1);
             PlayerPrefs.SetInt(SaveKey.MUSIC, 1);
+            PlayerPrefs.SetInt(SaveKey.BEST_SCORE, 0);
             PlayerPrefs.Save();
         }
     }

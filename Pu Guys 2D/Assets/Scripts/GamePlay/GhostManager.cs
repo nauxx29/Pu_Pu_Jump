@@ -29,6 +29,8 @@ public class GhostManager : MonoSingleton<GhostManager>
     {
         originalPosition = transform.position;
         AudioSetting();
+        gameObject.SetActive(false);
+
     }
 
     private void AudioSetting()
@@ -54,7 +56,7 @@ public class GhostManager : MonoSingleton<GhostManager>
             }
         }
 
-        if (!PlayerManager.Instance.IsAlive || !Tutorial.IsTutorialDone)
+        if (!PlayerManager.Instance.IsAlive)
         {
             return;
         }
@@ -79,6 +81,7 @@ public class GhostManager : MonoSingleton<GhostManager>
     private void OnReset()
     {
         transform.position = originalPosition;
+        gameObject.SetActive(false);
     }
 
     public void OnRevive()

@@ -1,32 +1,44 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class UiManager : MonoSingleton<UiManager> 
 {
+    public int NowScore { get; private set; }
+    private int bestScoreRecord;
     [SerializeField] private TMP_Text _scoreText;
-    [SerializeField] private TMP_Text _highScore;
     [SerializeField] private Button _reviveButton;
     [SerializeField] private GameObject _gameoverPanel;
     [SerializeField] private GameObject _rvNotReadyPopup;
+    [SerializeField] private GameObject _bestScore;
+    [SerializeField] private TMP_Text _bestScoreText;
 
     private void Start()
     {
+        void UpdateScoreText()
+        {
+            NowScore = 0;
+            UpdateScore(NowScore);
+            bestScoreRecord = PlayerPrefs.GetInt(SaveKey.BEST_SCORE);
+            _bestScoreText.text = bestScoreRecord.ToString();
+        }
+
 #if UNITY_EDITOR
         _reviveButton.interactable = true;
 #else
         _reviveButton.interactable = false;
 #endif
-        int initScore = 0;
-        UpdateScore(initScore);
 
-        PlayerRunTimeSettingData.SetVibrate(PlayerPrefs.GetInt(SaveKey.VIBRATION) == 1);
-        PlayerRunTimeSettingData.SetMusic(PlayerPrefs.GetInt(SaveKey.MUSIC) == 1);
+        UpdateScoreText();
+        _reviveButton.gameObject.SetActive(AdsManager.Instance.IsRvInit);
     }
 
-    public void UpdateScore(int score)
+    public void UpdateScore(int score, Action callback = null)
     {
-        _scoreText.text = score.ToString();
+        NowScore += score;
+        _scoreText.text = NowScore.ToString();
+        callback?.Invoke();
     }
 
     public void TogglePanel(bool sholdPanelActive)
@@ -40,6 +52,7 @@ public class UiManager : MonoSingleton<UiManager>
         EventCenter.OnRestart.Invoke();
         StairManager.Instance.Restart();
         TogglePanel(false);
+        ResetScore();
     }
 
     public void OnClickedRevive()
@@ -91,20 +104,28 @@ public class UiManager : MonoSingleton<UiManager>
         PlayerRunTimeSettingData.SetMusic(!isPlayingRv);
         EventCenter.OnMusicChange.Invoke();
     }
-}
 
-public static class PlayerRunTimeSettingData
-{
-    public static bool VibrationSetting { get; private set; }
-    public static bool MusicSetting { get; private set; }
-
-    public static void SetVibrate(bool setting)
+    public void ToggleHighestScore(bool toggle)
     {
-        VibrationSetting = setting;
+        _bestScore.SetActive(toggle);
     }
 
-    public static void SetMusic(bool setting)
+    public void UpdateBsetScore(int score)
     {
-        MusicSetting = setting;
+        _bestScoreText.text = score.ToString();
+    }
+
+    private void ResetScore()
+    {
+        if (NowScore > bestScoreRecord)
+        {
+            UpdateBsetScore(NowScore);
+            bestScoreRecord = NowScore;
+            PlayerPrefs.SetInt(SaveKey.BEST_SCORE, NowScore);
+            PlayerPrefs.Save();
+        }
+        ToggleHighestScore(true);
+        NowScore = 0;
+        UpdateScore(NowScore);
     }
 }

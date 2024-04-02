@@ -159,7 +159,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
             return;
         }
 
-        //isJump = false;
+        isJump = false;
         isOnTheGround = false;
         AnimationWalk(false);
         JumpForce();
@@ -245,7 +245,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
 
     public void SetOnGround(bool isOn)
     {
-        Debug.Log("isOnGround = " + isOn);
+        //Debug.Log("isOnGround = " + isOn);
         isOnTheGround = isOn;
     }
 
@@ -273,7 +273,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
         }
     }*/
 
-    private void OnCollisionExit2D(Collision2D collision)
+/*    private void OnCollisionExit2D(Collision2D collision)
     {
         if (isOnTheGround == false)
         {
@@ -284,6 +284,6 @@ public class PlayerManager : MonoSingleton<PlayerManager>
         {
             isOnTheGround = false;
         }
-    }
+    }*/
     #endregion
 }
