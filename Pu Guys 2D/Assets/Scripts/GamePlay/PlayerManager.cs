@@ -14,8 +14,6 @@ public class PlayerManager : MonoSingleton<PlayerManager>
     private float moveHorizontal;
     private bool isOnTheGround = true;
     private bool isJump = false;
-    private Vector3 lastPlatform;
-    
 
     [SerializeField] private Animator _animator;
     [SerializeField] private Rigidbody2D _rb2D;
@@ -161,7 +159,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
             return;
         }
 
-        isJump = false;
+        //isJump = false;
         isOnTheGround = false;
         AnimationWalk(false);
         JumpForce();
@@ -220,7 +218,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
     public void RevivePlayer()
     {
         AlreadyRevived = true;
-        Vector3 revivePosition = lastPlatform + REVIVE_ERROR;
+        Vector3 revivePosition = Stair.lastStair.position + REVIVE_ERROR;
         transform.position = revivePosition;
         SetPuAlive(true);
     }
@@ -245,11 +243,16 @@ public class PlayerManager : MonoSingleton<PlayerManager>
         _audioSource.volume = PlayerRunTimeSettingData.MusicSetting ? GameConst.Volume.PU_AS_ORIGINAL_VOULME : 0f;
     }
 
+    public void SetOnGround(bool isOn)
+    {
+        Debug.Log("isOnGround = " + isOn);
+        isOnTheGround = isOn;
+    }
 
     #region Collision
     // if hiiting(collision) sth
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    /*private void OnCollisionEnter2D(Collision2D collision)
     {
 
         // Check pu is on the top of the stair not trigger it from the below
@@ -268,7 +271,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
             isOnTheGround = true;
             lastPlatform = collision.transform.position;
         }
-    }
+    }*/
 
     private void OnCollisionExit2D(Collision2D collision)
     {

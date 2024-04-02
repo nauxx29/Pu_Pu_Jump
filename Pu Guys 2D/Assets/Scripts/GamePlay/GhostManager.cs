@@ -90,4 +90,12 @@ public class GhostManager : MonoSingleton<GhostManager>
     {
         gameObject.SetActive(!gameObject.activeSelf);
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && PlayerManager.Instance.IsAlive)
+        {
+            PlayerManager.Instance.GameOver();
+        }
+    }
 }

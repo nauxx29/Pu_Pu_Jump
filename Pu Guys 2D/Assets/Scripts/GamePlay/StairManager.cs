@@ -6,7 +6,8 @@ public enum StairType
 {
     Brick,
     Wood,
-    Straw
+    Straw,
+    Tutorial
 }
 
 public class StairManager : MonoSingleton<StairManager>
@@ -88,6 +89,11 @@ public class StairManager : MonoSingleton<StairManager>
 
     public void ReturnToPool(StairType type, Stair stair)
     {
+        if (stair.Type == StairType.Tutorial)
+        {
+            return;
+        }
+
         stairPools[type].Release(stair);
         activeStairList.Remove(stair);
     }
@@ -154,7 +160,6 @@ public class StairManager : MonoSingleton<StairManager>
             }
         }
     }
-
 
     public void Restart()
     {

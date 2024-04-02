@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Stair : MonoBehaviour
 {
-    protected static Stair lastStair;
+    public static Transform lastStair;
 
     public StairType Type => _type;
     [SerializeField] private StairType _type;
@@ -10,16 +10,16 @@ public class Stair : MonoBehaviour
     public Animator StairAnimator => _animator;
     [SerializeField] private Animator _animator;
 
-    public SpriteRenderer SpriteRenderer => _spriteRenderer;
-    [SerializeField] private SpriteRenderer _spriteRenderer;
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.relativeVelocity.y <= 0f && gameObject != null)
         {
+            PlayerManager.Instance.SetOnGround(true);
+
             switch (_type)
             {
                 case StairType.Brick:
+                case StairType.Tutorial:
                     break;
                 case StairType.Wood:
                     _animator.Play(GameConst.Wood.WOOD_CLIP);
@@ -29,11 +29,21 @@ public class Stair : MonoBehaviour
                     break;
             }
 
-            if (lastStair != this)
+            if (lastStair == this || _type == StairType.Tutorial)
             {
-                lastStair = this;
-                StairManager.Instance.UpdateScoreAndVibrate(1);
+                return;
             }
+
+            lastStair = gameObject.transform;
+            StairManager.Instance.UpdateScoreAndVibrate(1);
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            PlayerManager.Instance.SetOnGround(false);
         }
     }
 
