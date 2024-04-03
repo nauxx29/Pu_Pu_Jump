@@ -30,8 +30,6 @@ public class SideMenuUi : MonoBehaviour
     public void OnClickSideMenu()
     {
         isOpen = !isOpen;
-        FirebaseAnalytics.LogEvent("SideMenu", new Parameter("isOpen", isOpen.ToString()));
-
         _panel.raycastTarget = isLoadScene ? false : isOpen;
         _sideMenuRenderer.sprite = isOpen ? _closeSprite : _threeLineSprite;
         _vibrateButton.gameObject.SetActive(isOpen);
@@ -52,7 +50,6 @@ public class SideMenuUi : MonoBehaviour
 
     public void OnClickQuit()
     {
-        FirebaseAnalytics.LogEvent("QuitBtn");
         PlayerPrefs.Save();
         Application.Quit();
     }

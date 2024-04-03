@@ -6,12 +6,11 @@ public class TitleScripts : MonoBehaviour
 {
     public void startButton()
     {
-        FirebaseAnalytics.LogEvent("Start");
+        FirebaseAnalytics.LogEvent("start");
         PlayerPrefs.Save();
         SceneManager.LoadScene("Game");
-        if (Debug.isDebugBuild)
-        {
-            Debugger.Instance.OnChangeScene();
-        }
+#if DEBUG
+        Debugger.Instance.OnChangeScene();
+#endif
     }
 }

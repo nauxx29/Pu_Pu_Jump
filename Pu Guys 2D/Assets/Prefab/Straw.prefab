@@ -71,7 +71,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 2
   _animator: {fileID: 248174664815225380}
-  _spriteRenderer: {fileID: 1967358635270749664}
 --- !u!251 &8121923726849392624
 PlatformEffector2D:
   m_ObjectHideFlags: 0
@@ -80,14 +79,14 @@ PlatformEffector2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 772062496127467977}
   m_Enabled: 1
-  m_UseColliderMask: 1
+  m_UseColliderMask: 0
   m_ColliderMask:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RotationalOffset: 0
   m_UseOneWay: 1
   m_UseOneWayGrouping: 0
-  m_SurfaceArc: 150.9
+  m_SurfaceArc: 150
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 0
@@ -123,7 +122,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 1
   m_UsedByComposite: 0
-  m_Offset: {x: 0.027805328, y: 0.1956819}
+  m_Offset: {x: 0.027805328, y: 0.23337623}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -134,7 +133,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.27205, y: 0.28272754}
+  m_Size: {x: 2.27205, y: 0.20733887}
   m_EdgeRadius: 0
 --- !u!1 &5637497679996917401
 GameObject:

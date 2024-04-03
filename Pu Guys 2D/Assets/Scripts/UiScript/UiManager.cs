@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System;
+using Firebase.Analytics;
 
 public class UiManager : MonoSingleton<UiManager> 
 {
@@ -65,6 +66,8 @@ public class UiManager : MonoSingleton<UiManager>
             TogglePanel(false);
         }
 
+        FirebaseAnalytics.LogEvent("click_revive");
+
         if (PlayerManager.Instance.AlreadyRevived)
         {
             Debug.LogError("Already Revive but still press revive button");
@@ -78,7 +81,6 @@ public class UiManager : MonoSingleton<UiManager>
             Debug.LogError("AdsHelper.Instance == null");
             return;
         }
-
         AdsHelper.Instance.OnTryShowRv(RvPlacement.GAME_OVER, OnRvReward, OnReviveRvFail);
 #endif
     }

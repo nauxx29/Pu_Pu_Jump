@@ -21,6 +21,7 @@ public class StairManager : MonoSingleton<StairManager>
     private List<Stair> activeStairList = new List<Stair>();
     private Queue<Vector3> strawStairPositionRecord = new Queue<Vector3>();
     private int lastSpawnScore = 0;
+    private float lastScoreStairY = 0;
     private Stair updatingStair = null;
 
     protected override void Awake()
@@ -76,7 +77,6 @@ public class StairManager : MonoSingleton<StairManager>
         {
             Destroy(stair.gameObject);
         }, false, 10, 25);
-
         return pool;
     }
 
@@ -123,11 +123,17 @@ public class StairManager : MonoSingleton<StairManager>
             }
         }
 
-        if (updatingStair == null || updatingStair != stair)
+        if (stair.IsScored)
+        {
+            return;
+        }
+
+        if (updatingStair == null || updatingStair != stair )
         {
             updatingStair = stair;
             UiManager.Instance.UpdateScore(value, () =>
             {
+                stair.SetStairScored();
                 if (UiManager.Instance.NowScore - lastSpawnScore >= 5)
                 {
                     CheckIfSpawnStair();
@@ -136,7 +142,6 @@ public class StairManager : MonoSingleton<StairManager>
                 }
             });
         }
-
 
         if (PlayerRunTimeSettingData.VibrationSetting)
         {
@@ -194,6 +199,7 @@ public class StairManager : MonoSingleton<StairManager>
         LastSpawnY = _lastTutorialBrick.position.y;
         SpawnStairDuplicateWrapper(GameConst.INIT_STAIR_AMOUNT);
         lastSpawnScore = 0;
+        lastScoreStairY = 0;
     }
 
     public void SpawnStairDuplicateWrapper(int count)

@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class Stair : MonoBehaviour
 {
-    public static Transform lastStair;
+    public static Transform LastStair { get; private set; }
+    public bool IsScored{ get; private set; }  
 
     public StairType Type => _type;
     [SerializeField] private StairType _type;
@@ -10,9 +11,21 @@ public class Stair : MonoBehaviour
     public Animator StairAnimator => _animator;
     [SerializeField] private Animator _animator;
 
+    private void OnEnable()
+    {
+        IsScored = false;
+    }
+
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.relativeVelocity.y <= 0f && gameObject != null && collision.gameObject.CompareTag("Player"))
+        if (PlayerManager.Instance.IsOnTheGround)
+        {
+            return;
+        }
+
+        // need to be at leaset 0.1 due to they will have detect error if set to 0
+        if (collision.relativeVelocity.y <= 0.1f && gameObject != null && collision.gameObject.CompareTag("Player"))
         {
             PlayerManager.Instance.SetOnGround(true);
 
@@ -29,12 +42,12 @@ public class Stair : MonoBehaviour
                     break;
             }
 
-            if (lastStair == this || _type == StairType.Tutorial)
+            if (LastStair == this || _type == StairType.Tutorial)
             {
                 return;
             }
 
-            lastStair = gameObject.transform;
+            LastStair = gameObject.transform;
             StairManager.Instance.UpdateScoreAndVibrate(1, this);
         }
     }
@@ -51,6 +64,11 @@ public class Stair : MonoBehaviour
     {
         StairManager.Instance.UpdateStrawStairPositionRecord(transform.position);
         StairManager.Instance.ReturnToPool(_type, this);
+    }
+
+    public void SetStairScored()
+    {
+        IsScored = true;
     }
 }
 

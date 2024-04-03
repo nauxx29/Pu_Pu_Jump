@@ -23,17 +23,12 @@ public class Debugger : MonoSingleton<Debugger>
 
     private void Start()
     {
-        if (!Debug.isDebugBuild)
-        {
-            Destroy(_debugPanel);
-            Destroy(_fpsText.gameObject);
-            Destroy(gameObject);
-            return;
-        }
-        else
-        {
-            DontDestroyOnLoad(gameObject);
-        }
+#if !DEBUG
+        Destroy(_debugPanel);
+        Destroy(_fpsText.gameObject);
+        Destroy(gameObject);
+        return;
+#endif
     }
 
     private void OnEnable()

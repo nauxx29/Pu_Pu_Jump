@@ -27,7 +27,9 @@ public class AdsManager : MonoSingleton<AdsManager>
                     FirebaseApp app = FirebaseApp.DefaultInstance;
                     // Set a flag here to indicate whether Firebase is ready to use by your app.
                     Crashlytics.ReportUncaughtExceptionsAsFatal = true;
-                    Debug.Log("Firebase Init OK");
+#if DEBUG
+                    Debug.Log("##### Firebase Init OK #####");
+#endif
                 }
                 else
                 {
@@ -54,6 +56,7 @@ public class AdsManager : MonoSingleton<AdsManager>
             IronSourceRewardedVideoEvents.onAdShowFailedEvent += RewardedVideoOnAdShowFailedEvent;
             IronSourceRewardedVideoEvents.onAdRewardedEvent += RewardedVideoOnAdRewardedEvent;
             IronSourceRewardedVideoEvents.onAdClickedEvent += RewardedVideoOnAdClickedEvent;
+            IronSourceEvents.onImpressionDataReadyEvent += ImpressionDataReadyEvent;
 
         }
 
@@ -73,7 +76,9 @@ public class AdsManager : MonoSingleton<AdsManager>
     
     private void SdkInitializationCompletedEvent() 
     {
-        Debug.Log("IronSource Init OK");
+#if DEBUG
+        Debug.Log("##### IronSource Init OK #####");
+#endif
     }
 
 
@@ -115,11 +120,9 @@ public class AdsManager : MonoSingleton<AdsManager>
     // When using server-to-server callbacks, you may ignore this event and wait for the ironSource server callback.
     protected void RewardedVideoOnAdRewardedEvent(IronSourcePlacement placement, IronSourceAdInfo adInfo)
     {
-        if (Debug.isDebugBuild)
-        {
-            Debug.Log($"Ads success, revenue : {adInfo.revenue}, {adInfo.adNetwork}, {adInfo.segmentName}");
-        }
-        ImpressionSuccessEvent(adInfo);
+#if DEBUG
+        Debug.Log($"Ads success, revenue : {adInfo.revenue}, {adInfo.adNetwork}, {adInfo.segmentName}");
+#endif
         AdsHelper.Instance.SuccessCallback();
     }
     // The rewarded video ad was failed to show.
@@ -135,8 +138,14 @@ public class AdsManager : MonoSingleton<AdsManager>
 
     }
 
+    
+    private void ImpressionDataReadyEvent(IronSourceImpressionData impressionData) 
+    {
+        ImpressionSuccessEvent(impressionData);
+    }
+
     #region Firebase
-    private void ImpressionSuccessEvent(IronSourceAdInfo infoData)
+    private void ImpressionSuccessEvent(IronSourceImpressionData infoData)
     {
         if (infoData != null)
         {
@@ -144,10 +153,10 @@ public class AdsManager : MonoSingleton<AdsManager>
             {
                 new Parameter("ad_platform", "ironSource"),
                 new Parameter("ad_source", infoData.adNetwork),
-                new Parameter("ad_unit_name", infoData.instanceName),
-                new Parameter("ad_format", infoData.adUnit),
+                new Parameter("ad_unit_name", infoData.adUnit),
+                new Parameter("ad_format", infoData.instanceName),
                 new Parameter("currency","USD"),
-                new Parameter("value", infoData.revenue.ToString())
+                new Parameter("value", infoData.revenue.Value)
             }; 
             FirebaseAnalytics.LogEvent("Ad_Impression", AdParameters);
         }

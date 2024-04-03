@@ -27,18 +27,18 @@ public class GameLogicCenter : MonoBehaviour
     {
         if (pause)
         {
-            FirebaseAnalytics.LogEvent("App_Out");
+            FirebaseAnalytics.LogEvent("app_out");
             PlayerPrefs.Save();
         }
         else
         {
-            FirebaseAnalytics.LogEvent("App_In");
+            FirebaseAnalytics.LogEvent("app_in");
         }
     }
 
     private void OnApplicationQuit()
     {
-        FirebaseAnalytics.LogEvent("App_Quit");
+        FirebaseAnalytics.LogEvent("app_quit");
         PlayerPrefs.Save();
     }
 }

@@ -14,6 +14,7 @@ public static class GameConst
     public class Wood
     {
         public const string WOOD_CLIP = "WoodClip";
+        public const string WOOD_IDLE = "Idle";
         public static readonly Vector3 WOOD_SCALE = new(0.7f, 0.7f, 0.7f);
     }
 
@@ -22,12 +23,6 @@ public static class GameConst
         public const string STRAW_CLIP = "StrawClip";
         public static readonly Vector3 STRAW_SCALE = new(0.64f, 0.64f, 0.64f);
         public static readonly Color STRAW_COLOR = new Color(255, 255, 255, 255);
-    }
-
-    public class AnimationName
-    {
-        public const string SIDEMENU_FADE_IN = "SideMenuFadeIn";
-        public const string SIDEMENU_CLOSE = "SideMenuClose";
     }
 
     public class Volume

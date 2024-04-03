@@ -10,9 +10,9 @@ public class PlayerManager : MonoSingleton<PlayerManager>
     public bool IsAlive { get; private set; }
     public bool IsUsingJoyStick { get; private set; }
     public bool AlreadyRevived { get; private set; }
+    public bool IsOnTheGround { get; private set; }
 
     private float moveHorizontal;
-    private bool isOnTheGround = true;
     private bool isJump = false;
 
     [SerializeField] private Animator _animator;
@@ -61,15 +61,15 @@ public class PlayerManager : MonoSingleton<PlayerManager>
             return;
         }
 
-        if (!IsUsingJoyStick)
-        {
-            moveHorizontal = Input.GetAxisRaw("Horizontal");
-            isJump = Input.GetKey(KeyCode.Space);
-        }
-        else
+        if (IsUsingJoyStick)
         {
             moveHorizontal = PlayerTouchMovement.Instance.MovementAmount.x;
             // jump => button detect
+        }
+        else
+        {
+            moveHorizontal = Input.GetAxisRaw("Horizontal");
+            isJump = Input.GetKey(KeyCode.Space);
         }
             
     }
@@ -154,13 +154,13 @@ public class PlayerManager : MonoSingleton<PlayerManager>
         }
 
         // condition fail
-        if (isJump != true || !isOnTheGround)
+        if (isJump != true || !IsOnTheGround)
         {
             return;
         }
 
         isJump = false;
-        isOnTheGround = false;
+        IsOnTheGround = false;
         AnimationWalk(false);
         JumpForce();
         JumpVfx();
@@ -218,7 +218,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
     public void RevivePlayer()
     {
         AlreadyRevived = true;
-        Vector3 revivePosition = Stair.lastStair.position + REVIVE_ERROR;
+        Vector3 revivePosition = Stair.LastStair.position + REVIVE_ERROR;
         transform.position = revivePosition;
         SetPuAlive(true);
     }
@@ -245,8 +245,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
 
     public void SetOnGround(bool isOn)
     {
-        //Debug.Log("isOnGround = " + isOn);
-        isOnTheGround = isOn;
+        IsOnTheGround = isOn;
     }
 
     #region Collision

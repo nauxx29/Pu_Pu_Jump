@@ -51,37 +51,6 @@ public class ObjectPool
     }
 }
 
-/*public class ObjectPoolManager : MonoBehaviour
-{
-    [SerializeField] private StairGenerater _brickStairPrefab;
-    [SerializeField] private StairGenerater _woodStairPrefab;
-    [SerializeField] private StairGenerater _strawStairPrefab;
-
-    private void Awake()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    private void OnDestroy()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
-    {
-        Debug.Log("Scene Loaded Complete");
-        SetUpObjectPools();
-    }
-
-
-    private void SetUpObjectPools()
-    {
-        ObjectPool.SetupPool(_brickStairPrefab, 20, StairType.Brick);
-        ObjectPool.SetupPool(_woodStairPrefab, 20, StairType.Wood);
-        ObjectPool.SetupPool(_strawStairPrefab, 20, StairType.Straw);
-    }
-}*/
-
 
 
 
