@@ -15,6 +15,8 @@ public class UiManager : MonoSingleton<UiManager>
     [SerializeField] private GameObject _bestScore;
     [SerializeField] private TMP_Text _bestScoreText;
 
+    private bool musicSettingCache;
+
     private void Start()
     {
         void UpdateScoreText()
@@ -103,6 +105,11 @@ public class UiManager : MonoSingleton<UiManager>
 
     public void OnRvToggleMusic(bool isPlayingRv)
     {
+        if (!PlayerRunTimeSettingData.MusicSetting)
+        {
+            return;
+        }
+
         PlayerRunTimeSettingData.SetMusic(!isPlayingRv);
         EventCenter.OnMusicChange.Invoke();
     }

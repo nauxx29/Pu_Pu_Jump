@@ -106,14 +106,12 @@ public class AdsManager : MonoSingleton<AdsManager>
     // The Rewarded Video ad view has opened. Your activity will loose focus.
     protected void RewardedVideoOnAdOpenedEvent(IronSourceAdInfo adInfo)
     {
-        PlayerRunTimeSettingData.SetMusic(false);
-        EventCenter.OnMusicChange.Invoke();
+        UiManager.Instance.OnRvToggleMusic(true);
     }
     // The Rewarded Video ad view is about to be closed. Your activity will regain its focus.
     protected void RewardedVideoOnAdClosedEvent(IronSourceAdInfo adInfo)
     {
-        PlayerRunTimeSettingData.SetMusic(true);
-        EventCenter.OnMusicChange.Invoke();
+        UiManager.Instance.OnRvToggleMusic(false);
     }
     // The user completed to watch the video, and should be rewarded.
     // The placement parameter will include the reward data.

@@ -96,9 +96,9 @@ public class Debugger : MonoSingleton<Debugger>
         PlayerPrefs.DeleteAll();
     }
 
-    public void OnNoGhost()
+    public void OnNoGhost(Toggle toggle)
     {
-        GhostManager.Instance.OnNoGhost();
+        GhostManager.Instance.OnNoGhost(toggle.isOn);
     }
 
     public void OnRestart()
@@ -114,5 +114,11 @@ public class Debugger : MonoSingleton<Debugger>
     public void OnCrash()
     {
         throw new System.Exception("test exception please ignore");
+    }
+
+    public void OnClickNewPu()
+    {
+        PlayerManager.Instance.DebugSetRiggid(1, 0, 0, 3);
+        PlayerManager.Instance.DebugSetSpeed(4);
     }
 }

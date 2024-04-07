@@ -21,7 +21,6 @@ public class StairManager : MonoSingleton<StairManager>
     private List<Stair> activeStairList = new List<Stair>();
     private Queue<Vector3> strawStairPositionRecord = new Queue<Vector3>();
     private int lastSpawnScore = 0;
-    private float lastScoreStairY = 0;
     private Stair updatingStair = null;
 
     protected override void Awake()
@@ -199,7 +198,6 @@ public class StairManager : MonoSingleton<StairManager>
         LastSpawnY = _lastTutorialBrick.position.y;
         SpawnStairDuplicateWrapper(GameConst.INIT_STAIR_AMOUNT);
         lastSpawnScore = 0;
-        lastScoreStairY = 0;
     }
 
     public void SpawnStairDuplicateWrapper(int count)

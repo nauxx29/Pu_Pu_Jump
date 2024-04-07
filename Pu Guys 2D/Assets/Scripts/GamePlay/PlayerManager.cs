@@ -233,6 +233,14 @@ public class PlayerManager : MonoSingleton<PlayerManager>
         jumpForce = jump;
     }
 
+    public void DebugSetRiggid(float mass, float linear, float angular, float gravity)
+    {
+        _rb2D.mass = mass;
+        _rb2D.drag = linear;
+        _rb2D.angularDrag = angular;
+        _rb2D.gravityScale = gravity;
+    }
+
     public void ToggleJoystick(bool isOn)
     {
         IsUsingJoyStick = isOn;

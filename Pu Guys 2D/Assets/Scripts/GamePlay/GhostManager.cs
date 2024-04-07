@@ -89,9 +89,9 @@ public class GhostManager : MonoSingleton<GhostManager>
         transform.position = new Vector3(_target.position.x - RESET_DISTANCE, _target.position.y - RESET_DISTANCE, transform.position.z);
     }
 
-    public void OnNoGhost()
+    public void OnNoGhost(bool isOn)
     {
-        gameObject.SetActive(!gameObject.activeSelf);
+        gameObject.SetActive(!isOn);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
