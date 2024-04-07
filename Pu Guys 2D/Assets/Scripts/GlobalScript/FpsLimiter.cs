@@ -1,16 +1,12 @@
-using UnityEditor;
 using UnityEngine;
 
 public class FpsLimiter : MonoBehaviour
 {
-    [SerializeField] private int TargetFrameRate = 60;
 
     void Awake()
     {
-        PlayerSettings.Android.optimizedFramePacing = true;
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = (int)TargetFrameRate;
-
+        Application.targetFrameRate = 60;
+        Time.fixedDeltaTime = 1f / 60f;
     }
 
 }
