@@ -21,12 +21,12 @@ public class SideMenuUi : MonoBehaviour
         isOpen = false;
     }
 
-    // should Not trigger
+/*    // should Not trigger
     private void OnDisable()
     {
         PlayerPrefs.Save();
     }
-
+*/
     public void OnClickSideMenu()
     {
         isOpen = !isOpen;
@@ -35,6 +35,11 @@ public class SideMenuUi : MonoBehaviour
         _vibrateButton.gameObject.SetActive(isOpen);
         _musicButton.gameObject.SetActive(isOpen);
         _exitButton.SetActive(isOpen);
+
+        if (!isOpen)
+        {
+            PlayerPrefs.Save();
+        }
     }
 
     public void OnClickMusic()
@@ -56,26 +61,28 @@ public class SideMenuUi : MonoBehaviour
 
     private void OnChageSettingValue(string key, SideMenuButton button)
     {
-        bool targetSetting;
         switch (key)
         {
             case SaveKey.MUSIC:
                 PlayerRunTimeSettingData.SetMusic(!PlayerRunTimeSettingData.MusicSetting);
-                targetSetting = PlayerRunTimeSettingData.MusicSetting;
+                PlayerPrefs.SetInt(key, BoolToInt(PlayerRunTimeSettingData.MusicSetting));
+                button.UpdateColor(PlayerRunTimeSettingData.MusicSetting);
                 break;
             case SaveKey.VIBRATION:
                 PlayerRunTimeSettingData.SetVibrate(!PlayerRunTimeSettingData.VibrationSetting);
-                targetSetting = PlayerRunTimeSettingData.VibrationSetting;
+                PlayerPrefs.SetInt(key, BoolToInt(PlayerRunTimeSettingData.VibrationSetting));
+                button.UpdateColor(PlayerRunTimeSettingData.VibrationSetting);
                 break;
             default:
-                targetSetting = false;
                 Debug.LogError("Change Setting Value is not SaveKey value");
                 break;
         }
+    }
 
-        int boolToIntValue = targetSetting == true ? 1 : 0;
-        PlayerPrefs.SetInt(key, boolToIntValue);
-        button.UpdateColor(targetSetting);
+    private int BoolToInt(bool boolValue)
+    {
+        int value = boolValue ? 1 : 0;
+        return value;
     }
 }
 

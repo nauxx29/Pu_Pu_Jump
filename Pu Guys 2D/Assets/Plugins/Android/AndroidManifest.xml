@@ -7,8 +7,10 @@
     
     <!-- Add the permission line here, just inside the manifest tag -->
     <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
-      
-    <application>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+
+  <application>
         <activity android:name="com.unity3d.player.UnityPlayerActivity"
                   android:theme="@style/UnityThemeSelector">
             <intent-filter>

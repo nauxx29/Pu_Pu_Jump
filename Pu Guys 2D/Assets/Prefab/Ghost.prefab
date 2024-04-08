@@ -280,7 +280,7 @@ Transform:
   - {fileID: 4066113591746692687}
   - {fileID: 4950594124078201991}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &8473160863234893234
 CircleCollider2D:

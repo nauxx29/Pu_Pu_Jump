@@ -76,9 +76,7 @@ public class AdsManager : MonoSingleton<AdsManager>
     
     private void SdkInitializationCompletedEvent() 
     {
-#if DEBUG
         Debug.Log("##### IronSource Init OK #####");
-#endif
     }
 
 

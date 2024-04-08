@@ -34,13 +34,14 @@ public class PlayerTouchMovement : MonoSingleton<PlayerTouchMovement>
             movementFinger = touchFinger;
             movementAmout = Vector2.zero;
             joystick.gameObject.SetActive(true);
-            joystick.RectTransform.anchoredPosition = touchFinger.screenPosition; //ClampStartPosition(touchFinger.screenPosition);
+            joystick.RectTransform.anchoredPosition = touchFinger.screenPosition;
         }
     }
 
 
     private void HandleFingerUp(Finger upFinger)
     {
+        
         if (upFinger == movementFinger)
         {
             movementFinger = null;
