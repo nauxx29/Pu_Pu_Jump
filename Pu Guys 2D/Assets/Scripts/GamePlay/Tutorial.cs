@@ -3,6 +3,7 @@ using UnityEngine;
 public class Tutorial : MonoBehaviour
 {
     [SerializeField] private GameObject _ghost;
+    [SerializeField] private GameObject _tutorial;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -10,6 +11,7 @@ public class Tutorial : MonoBehaviour
         {
             _ghost.SetActive(true);
             UiManager.Instance.ToggleHighestScore(false);
+            Destroy(_tutorial);
         }
     }
 }

@@ -170,13 +170,13 @@ public class PlayerManager : MonoSingleton<PlayerManager>
     private void OnCheckBoundary()
     {
         // Jump out from one side then transfer to another side
-        if (transform.position.x > BoundaryValue.RightX)
+        if (transform.position.x > BoundaryValue.RightX + 0.2f)
         {
-            transform.position = new Vector2(BoundaryValue.LeftX, transform.position.y);
+            transform.position = new Vector2(BoundaryValue.LeftX - 0.2f, transform.position.y);
         }
-        else if (transform.position.x < BoundaryValue.LeftX)
+        else if (transform.position.x < BoundaryValue.LeftX - 0.2f)
         {
-            transform.position = new Vector2(BoundaryValue.RightX, transform.position.y);
+            transform.position = new Vector2(BoundaryValue.RightX + 0.2f, transform.position.y);
         }
     }
 
@@ -255,42 +255,4 @@ public class PlayerManager : MonoSingleton<PlayerManager>
     {
         IsOnTheGround = isOn;
     }
-
-    #region Collision
-    // if hiiting(collision) sth
-
-    /*private void OnCollisionEnter2D(Collision2D collision)
-    {
-
-        // Check pu is on the top of the stair not trigger it from the below
-        if (collision.gameObject.CompareTag("Ghost") && IsAlive)
-        {
-            GameOver();
-        }
-
-        if (isOnTheGround == true)
-        {
-            return;
-        }
-
-        if (collision.gameObject.CompareTag("Platform") && collision.relativeVelocity.y > 0f)
-        {
-            isOnTheGround = true;
-            lastPlatform = collision.transform.position;
-        }
-    }*/
-
-/*    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (isOnTheGround == false)
-        {
-            return;
-        }
-
-        if (collision.gameObject.CompareTag("Platform"))
-        {
-            isOnTheGround = false;
-        }
-    }*/
-    #endregion
 }
