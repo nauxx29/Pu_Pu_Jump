@@ -6,7 +6,7 @@ public class TitleScripts : MonoBehaviour
 {
     public void startButton()
     {
-        FirebaseAnalytics.LogEvent("start");
+        FirebaseManager.Instance.FirebaseLog("start");
         PlayerPrefs.Save();
         SceneManager.LoadScene("Game");
 #if DEBUG

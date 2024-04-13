@@ -2,7 +2,6 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System;
-using Firebase.Analytics;
 
 public class UiManager : MonoSingleton<UiManager> 
 {
@@ -68,7 +67,7 @@ public class UiManager : MonoSingleton<UiManager>
             TogglePanel(false);
         }
 
-        FirebaseAnalytics.LogEvent("click_revive");
+        FirebaseManager.Instance.FirebaseLog("click_revive");
 
         if (PlayerManager.Instance.AlreadyRevived)
         {
