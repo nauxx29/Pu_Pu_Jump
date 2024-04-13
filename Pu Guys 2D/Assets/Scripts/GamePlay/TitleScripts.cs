@@ -1,4 +1,3 @@
-using Firebase.Analytics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
