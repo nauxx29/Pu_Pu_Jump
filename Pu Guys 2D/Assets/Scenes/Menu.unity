@@ -771,7 +771,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1092475585}
         m_TargetAssemblyTypeName: TitleScripts, Assembly-CSharp
-        m_MethodName: startButton
+        m_MethodName: StartButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -37,16 +37,12 @@ public class StairManager : MonoSingleton<StairManager>
         InitStairs();
     }
 
-    #region ObjectPool Function
+    #region Unity ObjectPool Function
     private ObjectPool<Stair> InitPool(StairType type)
     {
-        void ResetAnimToDefault(Stair stair)
-        {
-            stair.StairAnimator.CrossFade("Idle", 0f);
-            stair.StairAnimator.Update(0f);
-        }
 
         Stair prefab = _brickStair;
+
         switch (type)
         {
             case StairType.Brick:
@@ -59,6 +55,7 @@ public class StairManager : MonoSingleton<StairManager>
                 prefab = _strawStair;
                 break;
         }
+
         var pool = new ObjectPool<Stair>(() =>
         {
             return Instantiate(prefab);
@@ -67,10 +64,6 @@ public class StairManager : MonoSingleton<StairManager>
             stair.gameObject.SetActive(true);
         }, stair =>
         {
-            if (stair.StairAnimator != null)
-            {
-                ResetAnimToDefault(stair);
-            }
             stair.gameObject.SetActive(false);
         }, stair =>
         {
@@ -88,9 +81,21 @@ public class StairManager : MonoSingleton<StairManager>
 
     public void ReturnToPool(StairType type, Stair stair)
     {
+        // animation will not reset to default without this function
+        void ResetAnimToDefault(Stair stair)
+        {
+            stair.StairAnimator.CrossFade("Idle", 0f);
+            stair.StairAnimator.Update(0f);
+        }
+
         if (stair.Type == StairType.Tutorial)
         {
             return;
+        }
+
+        if (stair.StairAnimator != null)
+        {
+            ResetAnimToDefault(stair);
         }
 
         stairPools[type].Release(stair);

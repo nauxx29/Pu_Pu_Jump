@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class TitleScripts : MonoBehaviour
 {
-    public void startButton()
+    public void StartButton()
     {
         FirebaseManager.Instance.FirebaseLog("start");
         PlayerPrefs.Save();

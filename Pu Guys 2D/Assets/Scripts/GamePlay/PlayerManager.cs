@@ -102,6 +102,7 @@ public class PlayerManager : MonoSingleton<PlayerManager>
     }
 
     #region Movement
+
     public void OnJumpBtnClicked()
     {
         isJump = true;
@@ -223,6 +224,18 @@ public class PlayerManager : MonoSingleton<PlayerManager>
         SetPuAlive(true);
     }
 
+    private void AudioSetting()
+    {
+        _audioSource.volume = PlayerRunTimeSettingData.MusicSetting ? GameConst.Volume.PU_AS_ORIGINAL_VOULME : 0f;
+    }
+
+    public void SetOnGround(bool isOn)
+    {
+        IsOnTheGround = isOn;
+    }
+
+    #region DEBUG
+
     public void DebugSetSpeed(int speed)
     {
         moveSpeed = speed;
@@ -246,13 +259,5 @@ public class PlayerManager : MonoSingleton<PlayerManager>
         IsUsingJoyStick = isOn;
     }
 
-    private void AudioSetting()
-    {
-        _audioSource.volume = PlayerRunTimeSettingData.MusicSetting ? GameConst.Volume.PU_AS_ORIGINAL_VOULME : 0f;
-    }
-
-    public void SetOnGround(bool isOn)
-    {
-        IsOnTheGround = isOn;
-    }
+    #endregion
 }
