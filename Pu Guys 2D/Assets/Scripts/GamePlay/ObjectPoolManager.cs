@@ -1,5 +1,6 @@
-using System.Collections.Generic;
+/* System.Collections.Generic;
 using UnityEngine;
+
 // For static use
 public class ObjectPool
 {
@@ -50,7 +51,7 @@ public class ObjectPool
         }
     }
 }
-
+*/
 
 
 
