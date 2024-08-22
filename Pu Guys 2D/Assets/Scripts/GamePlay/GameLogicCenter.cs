@@ -41,6 +41,7 @@ public class GameLogicCenter : MonoBehaviour
     {
         FirebaseManager.Instance.FirebaseLog("app_quit");
     }
+    ///
 }
 
 
