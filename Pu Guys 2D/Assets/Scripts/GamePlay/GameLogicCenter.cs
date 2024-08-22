@@ -36,10 +36,10 @@ public class GameLogicCenter : MonoBehaviour
         }
     }
 
+    // will trigger PlayerPref.Save();
     private void OnApplicationQuit()
     {
         FirebaseManager.Instance.FirebaseLog("app_quit");
-        PlayerPrefs.Save();
     }
 }
 
